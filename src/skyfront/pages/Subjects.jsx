@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SkyFrontLayout } from "../layout/SkyFrontLayout";
 import { CrudLayout } from "../layout/CrudLayout";
 import {
@@ -9,8 +9,10 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { useMateriasFunctions } from "../../hooks/useMateriasFunctions";
 
 export const Subjects = () => {
+  const { getMaterias } = useMateriasFunctions();
   const [materias, setMaterias] = useState([]);
   const [open, setOpen] = useState(false);
   const [nombre, setNombre] = useState("");
@@ -22,10 +24,9 @@ export const Subjects = () => {
     message: "",
     severity: "success",
   });
-
   const columns = [
     { field: "nombre", headerName: "Nombre" },
-    { field: "profesor", headerName: "Profesor" },
+    { field: "profesor_nombre", headerName: "Profesor" },
   ];
 
   const handleOpen = () => setOpen(true);
@@ -102,6 +103,15 @@ export const Subjects = () => {
     }
     setSnackbar({ ...snackbar, open: false });
   };
+
+  const get = async () => {
+    const data = await getMaterias();
+    setMaterias(data);
+  };
+
+  useEffect(() => {
+    get();
+  }, []);
 
   return (
     <SkyFrontLayout>
