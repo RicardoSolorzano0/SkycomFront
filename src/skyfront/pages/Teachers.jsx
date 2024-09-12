@@ -7,10 +7,13 @@ import {
   TextField,
 } from "@mui/material";
 import { SkyFrontLayout } from "../layout/SkyFrontLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CrudLayout } from "../layout/CrudLayout";
+import { useProfesorFunctions } from "../../hooks/useProfesorFunctions";
 
 export const Teachers = () => {
+  const { getProfesores, updateProfesor, deleteProfesor, createProfesor } =
+    useProfesorFunctions();
   const [profesores, setProfesores] = useState([]);
   const [open, setOpen] = useState(false);
   const [nombre, setNombre] = useState("");
@@ -49,29 +52,19 @@ export const Teachers = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
       if (editando !== null) {
-        setProfesores(
-          profesores.map((prof) =>
-            prof.id === editando ? { ...prof, nombre, apellido, email } : prof
-          )
-        );
+        await updateProfesor({ id: editando, nombre, apellido, email });
+        get();
         setSnackbar({
           open: true,
           message: "Profesor actualizado con éxito",
           severity: "success",
         });
       } else {
-        setProfesores([
-          ...profesores,
-          {
-            id: Date.now(),
-            nombre,
-            apellido,
-            email,
-          },
-        ]);
+        await createProfesor({ nombre, apellido, email });
+        get();
         setSnackbar({
           open: true,
           message: "Profesor agregado con éxito",
@@ -93,8 +86,9 @@ export const Teachers = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    setProfesores(profesores.filter((prof) => prof.id !== id));
+  const handleDelete = async (id) => {
+    await deleteProfesor(id);
+    get();
     setSnackbar({
       open: true,
       message: "Profesor eliminado con éxito",
@@ -108,6 +102,15 @@ export const Teachers = () => {
     }
     setSnackbar({ ...snackbar, open: false });
   };
+
+  const get = async () => {
+    const data = await getProfesores();
+    setProfesores(data);
+  };
+
+  useEffect(() => {
+    get();
+  }, []);
 
   return (
     <SkyFrontLayout>
