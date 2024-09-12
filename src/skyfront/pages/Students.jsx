@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CrudLayout } from "../layout/CrudLayout";
 import { SkyFrontLayout } from "../layout/SkyFrontLayout";
 import {
@@ -9,8 +9,11 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import { useAlumnoFunctions } from "../../hooks/useAlumnoFunctions";
 
 export const Students = () => {
+  const { getAlumnos, createAlumno, updateAlumno, deleteAlumno } =
+    useAlumnoFunctions();
   const [estudiantes, setEstudiantes] = useState([]);
   const [open, setOpen] = useState(false);
   const [nombre, setNombre] = useState("");
@@ -30,7 +33,7 @@ export const Students = () => {
     { field: "apellido", headerName: "Apellido" },
     { field: "email", headerName: "Email" },
     {
-      field: "fechaN",
+      field: "fecha_nacimiento",
       headerName: "Fecha Nacimiento",
       type: "date",
       format: "dd/MM/yyyy",
@@ -66,14 +69,15 @@ export const Students = () => {
       setNombre(estudiante.nombre);
       setApellido(estudiante.apellido);
       setEmail(estudiante.email);
-      setFechaN(estudiante.fechaN);
+      setFechaN(estudiante.fecha_nacimiento);
       setEditando(id);
       handleOpen();
     }
   };
 
-  const handleDelete = (id) => {
-    setEstudiantes(estudiantes.filter((prof) => prof.id !== id));
+  const handleDelete = async (id) => {
+    await deleteAlumno(id);
+    get();
     setSnackbar({
       open: true,
       message: "Estudiante eliminado con éxito",
@@ -88,32 +92,30 @@ export const Students = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
       if (editando !== null) {
-        setEstudiantes(
-          estudiantes.map((prof) =>
-            prof.id === editando
-              ? { ...prof, nombre, apellido, email, fechaN }
-              : prof
-          )
-        );
+        await updateAlumno({
+          id: editando,
+          nombre,
+          apellido,
+          email,
+          fecha_nacimiento: fechaN,
+        });
+        get();
         setSnackbar({
           open: true,
           message: "Estudiante actualizado con éxito",
           severity: "success",
         });
       } else {
-        setEstudiantes([
-          ...estudiantes,
-          {
-            id: Date.now(),
-            nombre,
-            apellido,
-            email,
-            fechaN,
-          },
-        ]);
+        await createAlumno({
+          nombre,
+          apellido,
+          email,
+          fecha_nacimiento: fechaN,
+        });
+        get();
         setSnackbar({
           open: true,
           message: "Estudiante agregado con éxito",
@@ -123,6 +125,15 @@ export const Students = () => {
       handleClose();
     }
   };
+
+  const get = async () => {
+    const data = await getAlumnos();
+    setEstudiantes(data);
+  };
+
+  useEffect(() => {
+    get();
+  }, []);
 
   return (
     <SkyFrontLayout>
