@@ -48,6 +48,8 @@ export const Teachers = () => {
     if (!nombre.trim()) newErrors.nombre = "El nombre es requerido";
     if (!apellido.trim()) newErrors.apellido = "El apellido es requerido";
     if (!email.trim()) newErrors.email = "El email es requerido";
+    //validando email valido
+    if (!email.includes("@")) newErrors.email = "El email no es valido";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
