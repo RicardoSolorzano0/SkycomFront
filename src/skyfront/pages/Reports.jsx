@@ -16,6 +16,7 @@ import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import { useEffect, useMemo, useState } from "react";
 import { useNotaFunctions } from "../../hooks/useNotaFunctions";
 import { TableReport } from "../components/TableReport";
+import { CSVLink } from "react-csv";
 
 export const Reports = () => {
   const { getReportAPI } = useNotaFunctions();
@@ -149,12 +150,19 @@ export const Reports = () => {
                       gap: 2,
                     }}
                   >
-                    <Button
-                      variant="contained"
-                      startIcon={<FileDownloadIcon />}
+                    <CSVLink
+                      data={filteredData}
+                      filename="reporte.csv"
+                      style={{ textDecoration: "none" }}
                     >
-                      CSV
-                    </Button>
+                      <Button
+                        variant="contained"
+                        startIcon={<FileDownloadIcon />}
+                      >
+                        CSV
+                      </Button>
+                    </CSVLink>
+
                     <Button
                       variant="contained"
                       color="secondary"
