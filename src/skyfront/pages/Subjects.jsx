@@ -137,7 +137,7 @@ export const Subjects = () => {
             <TextField
               autoFocus
               margin="dense"
-              label="Nombre"
+              label="Nombre de materia"
               type="text"
               fullWidth
               value={nombre}
@@ -156,6 +156,7 @@ export const Subjects = () => {
                 label: prof.nombre,
               }))}
             />
+
             {/* <TextField
               margin="dense"
               label="Profesor"
