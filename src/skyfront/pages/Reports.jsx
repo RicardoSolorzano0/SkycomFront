@@ -17,6 +17,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useNotaFunctions } from "../../hooks/useNotaFunctions";
 import { TableReport } from "../components/TableReport";
 import { CSVLink } from "react-csv";
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
 
 export const Reports = () => {
   const { getReportAPI } = useNotaFunctions();
@@ -41,7 +43,17 @@ export const Reports = () => {
   const students = [...new Set(studentData.map((student) => student.alumno))];
 
   const downloadPDF = () => {
-    // Función para descargar PDF
+    const doc = new jsPDF();
+    doc.autoTable({
+      head: [["Estudiante", "Materia", "Promedio", "Estado"]],
+      body: filteredData.map((row) => [
+        row.alumno,
+        row.materia,
+        row.promedio,
+        row.estado,
+      ]),
+    });
+    doc.save("report.pdf");
   };
 
   const get = async () => {
@@ -144,18 +156,14 @@ export const Reports = () => {
                     justifyContent: "flex-end",
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: 2,
-                    }}
-                  >
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
                     <CSVLink
                       data={filteredData}
                       filename="reporte.csv"
                       style={{ textDecoration: "none" }}
                     >
                       <Button
+                        sx={{ mr: 5 }}
                         variant="contained"
                         startIcon={<FileDownloadIcon />}
                       >
