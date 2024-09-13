@@ -37,10 +37,20 @@ export const useNotaFunctions = () => {
     }
   };
 
+  const getReportAPI = async () => {
+    try {
+      const { data } = await notasApi.get("/reporte_aprobados_reprobados/");
+      return data;
+    } catch (error) {
+      console.log(error, "error");
+    }
+  };
+
   return {
     getNotas,
     updateNota,
     deleteNota,
     createNota,
+    getReportAPI,
   };
 };
