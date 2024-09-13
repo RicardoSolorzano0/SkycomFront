@@ -58,7 +58,8 @@ export const Grades = () => {
     if (!alumno) newErrors.alumno = "El alumno es requerido";
     if (!materia || materia === "")
       newErrors.materia = "La materia es requerida";
-    if (!nota.trim()) newErrors.nota = "La nota es requerida";
+    if (!nota.trim() || nota <= 0 || nota > 10)
+      newErrors.nota = "La nota es requerida";
     if (!tipoEvaluacion.trim())
       newErrors.tipoEvaluacion = "La evaluacion es requerida";
     setErrors(newErrors);
