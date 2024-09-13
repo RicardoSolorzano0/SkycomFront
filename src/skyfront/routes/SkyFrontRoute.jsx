@@ -3,6 +3,7 @@ import { SkyFrontPage } from "../pages/SkyFrontPage";
 import { Teachers } from "../pages/Teachers";
 import { Students } from "../pages/Students";
 import { Subjects } from "../pages/Subjects";
+import { Grades } from "../pages/Grades";
 
 export const SkyFrontRoute = () => {
   return (
@@ -11,6 +12,7 @@ export const SkyFrontRoute = () => {
       <Route path="/teachers" element={<Teachers />} />
       <Route path="/students" element={<Students />} />
       <Route path="/subjects" element={<Subjects />} />
+      <Route path="/grades" element={<Grades />} />
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );
