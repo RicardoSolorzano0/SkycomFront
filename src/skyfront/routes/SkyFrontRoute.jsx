@@ -4,6 +4,7 @@ import { Teachers } from "../pages/Teachers";
 import { Students } from "../pages/Students";
 import { Subjects } from "../pages/Subjects";
 import { Grades } from "../pages/Grades";
+import { Reports } from "../pages/Reports";
 
 export const SkyFrontRoute = () => {
   return (
@@ -13,6 +14,7 @@ export const SkyFrontRoute = () => {
       <Route path="/students" element={<Students />} />
       <Route path="/subjects" element={<Subjects />} />
       <Route path="/grades" element={<Grades />} />
+      <Route path="/reports" element={<Reports />} />
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );

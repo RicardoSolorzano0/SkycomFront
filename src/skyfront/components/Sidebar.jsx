@@ -49,6 +49,7 @@ export const Sidebar = ({ drawerWidth = 240 }) => {
             { text: "Alumnos", path: "/students" },
             { text: "Materias", path: "/subjects" },
             { text: "Notas", path: "/grades" },
+            { text: "Reportes", path: "/reports" },
           ].map(({ text, path }, index) => (
             <ListItem
               key={path}
