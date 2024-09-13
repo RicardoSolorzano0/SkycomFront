@@ -16,6 +16,7 @@ export const useMateriasFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "Error al actualizar la materia" };
     }
   };
 
@@ -25,6 +26,7 @@ export const useMateriasFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "Error al eliminar la materia" };
     }
   };
 
@@ -34,6 +36,7 @@ export const useMateriasFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "Error al crear la materia" };
     }
   };
 

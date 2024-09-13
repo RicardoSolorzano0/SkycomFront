@@ -55,22 +55,33 @@ export const Subjects = () => {
   const handleSubmit = async () => {
     if (validateForm()) {
       if (editando !== null) {
-        await updateMateria({ id: editando, nombre, profesor });
-        get();
-        setSnackbar({
-          open: true,
-          message: "Materia actualizada con éxito",
-          severity: "success",
+        const { error } = await updateMateria({
+          id: editando,
+          nombre,
+          profesor,
         });
+        if (error) {
+          snackbar({ open: true, message: error, severity: "error" });
+        } else {
+          get();
+          setSnackbar({
+            open: true,
+            message: "Materia actualizada con éxito",
+            severity: "success",
+          });
+        }
       } else {
-        await createMateria({ nombre, profesor });
-        get();
-
-        setSnackbar({
-          open: true,
-          message: "Materia agregada con éxito",
-          severity: "success",
-        });
+        const { error } = await createMateria({ nombre, profesor });
+        if (error) {
+          snackbar({ open: true, message: error, severity: "error" });
+        } else {
+          get();
+          setSnackbar({
+            open: true,
+            message: "Materia agregada con éxito",
+            severity: "success",
+          });
+        }
       }
       handleClose();
     }
@@ -87,13 +98,17 @@ export const Subjects = () => {
   };
 
   const handleDelete = async (id) => {
-    await deleteMateria(id);
-    get();
-    setSnackbar({
-      open: true,
-      message: "Materia eliminada con éxito",
-      severity: "success",
-    });
+    const { error } = await deleteMateria(id);
+    if (error) {
+      snackbar({ open: true, message: error, severity: "error" });
+    } else {
+      get();
+      setSnackbar({
+        open: true,
+        message: "Materia eliminada con éxito",
+        severity: "success",
+      });
+    }
   };
 
   const handleCloseSnackbar = (event, reason) => {
