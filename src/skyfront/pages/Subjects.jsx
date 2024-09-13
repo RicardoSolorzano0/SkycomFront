@@ -10,10 +10,15 @@ import {
   TextField,
 } from "@mui/material";
 import { useMateriasFunctions } from "../../hooks/useMateriasFunctions";
+import BasicSelect from "../components/BasicSelect";
+import { useProfesorFunctions } from "../../hooks/useProfesorFunctions";
 
 export const Subjects = () => {
-  const { getMaterias } = useMateriasFunctions();
+  const { getMaterias, updateMateria, deleteMateria, createMateria } =
+    useMateriasFunctions();
+  const { getProfesores } = useProfesorFunctions();
   const [materias, setMaterias] = useState([]);
+  const [profesores, setProfesores] = useState([]);
   const [open, setOpen] = useState(false);
   const [nombre, setNombre] = useState("");
   const [profesor, setProfesor] = useState("");
@@ -24,6 +29,7 @@ export const Subjects = () => {
     message: "",
     severity: "success",
   });
+
   const columns = [
     { field: "nombre", headerName: "Nombre" },
     { field: "profesor_nombre", headerName: "Profesor" },
@@ -41,33 +47,24 @@ export const Subjects = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!nombre.trim()) newErrors.nombre = "El nombre es requerido";
-    if (!profesor.trim()) newErrors.profesor = "El profesor es requerido";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
       if (editando !== null) {
-        setMaterias(
-          materias.map((prof) =>
-            prof.id === editando ? { ...prof, nombre, profesor } : prof
-          )
-        );
+        await updateMateria({ id: editando, nombre, profesor });
+        get();
         setSnackbar({
           open: true,
           message: "Materia actualizada con éxito",
           severity: "success",
         });
       } else {
-        setMaterias([
-          ...materias,
-          {
-            id: Date.now(),
-            nombre,
-            profesor,
-          },
-        ]);
+        await createMateria({ nombre, profesor });
+        get();
+
         setSnackbar({
           open: true,
           message: "Materia agregada con éxito",
@@ -88,8 +85,9 @@ export const Subjects = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    setMaterias(materias.filter((prof) => prof.id !== id));
+  const handleDelete = async (id) => {
+    await deleteMateria(id);
+    get();
     setSnackbar({
       open: true,
       message: "Materia eliminada con éxito",
@@ -109,8 +107,14 @@ export const Subjects = () => {
     setMaterias(data);
   };
 
+  const getProfes = async () => {
+    const data = await getProfesores();
+    setProfesores(data);
+  };
+
   useEffect(() => {
     get();
+    getProfes();
   }, []);
 
   return (
@@ -141,7 +145,18 @@ export const Subjects = () => {
               error={!!errors.nombre}
               helperText={errors.nombre}
             />
-            <TextField
+            <BasicSelect
+              label="Profesor"
+              value={profesor}
+              onChange={(e) => {
+                setProfesor(e.target.value);
+              }}
+              menuItems={profesores.map((prof) => ({
+                value: prof.id,
+                label: prof.nombre,
+              }))}
+            />
+            {/* <TextField
               margin="dense"
               label="Profesor"
               type="text"
@@ -150,7 +165,7 @@ export const Subjects = () => {
               onChange={(e) => setProfesor(e.target.value)}
               error={!!errors.profesor}
               helperText={errors.profesor}
-            />
+            /> */}
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancelar</Button>
