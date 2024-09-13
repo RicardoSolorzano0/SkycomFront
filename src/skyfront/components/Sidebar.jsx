@@ -4,14 +4,11 @@ import {
   Drawer,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
   Toolbar,
   Typography,
 } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import { Link } from "react-router-dom";
 
 export const Sidebar = ({ drawerWidth = 240 }) => {
@@ -50,7 +47,7 @@ export const Sidebar = ({ drawerWidth = 240 }) => {
             { text: "Materias", path: "/subjects" },
             { text: "Notas", path: "/grades" },
             { text: "Reportes", path: "/reports" },
-          ].map(({ text, path }, index) => (
+          ].map(({ text, path }) => (
             <ListItem
               key={path}
               disablePadding
@@ -59,9 +56,6 @@ export const Sidebar = ({ drawerWidth = 240 }) => {
               sx={{ color: "black" }}
             >
               <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
