@@ -69,19 +69,28 @@ export const Grades = () => {
   const handleSubmit = async () => {
     if (validateForm()) {
       if (editando !== null) {
-        await updateNota({
+        const { error } = await updateNota({
           id: editando,
           alumno,
           materia,
           nota,
           tipo_evaluacion: tipoEvaluacion,
         });
-        get();
-        setSnackbar({
-          open: true,
-          message: "Nota actualizada con éxito",
-          severity: "success",
-        });
+
+        if (error) {
+          setSnackbar({
+            open: true,
+            message: error,
+            severity: "error",
+          });
+        } else {
+          get();
+          setSnackbar({
+            open: true,
+            message: "Nota actualizada con éxito",
+            severity: "success",
+          });
+        }
       } else {
         const { error } = await createNota({
           alumno,
@@ -123,13 +132,21 @@ export const Grades = () => {
   };
 
   const handleDelete = async (id) => {
-    await deleteNota(id);
-    get();
-    setSnackbar({
-      open: true,
-      message: "Nota eliminada con éxito",
-      severity: "success",
-    });
+    const { error } = await deleteNota(id);
+    if (error) {
+      setSnackbar({
+        open: true,
+        message: error,
+        severity: "error",
+      });
+    } else {
+      get();
+      setSnackbar({
+        open: true,
+        message: "Nota eliminada con éxito",
+        severity: "success",
+      });
+    }
   };
 
   const handleCloseSnackbar = (event, reason) => {

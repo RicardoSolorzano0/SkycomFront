@@ -16,6 +16,7 @@ export const useNotaFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "No se logro actualizar" };
     }
   };
 
@@ -25,6 +26,7 @@ export const useNotaFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "No se logro eliminar" };
     }
   };
 
