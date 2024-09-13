@@ -33,7 +33,8 @@ export const useNotaFunctions = () => {
       const { data } = await notasApi.post("/", nota);
       return data;
     } catch (error) {
-      console.log(error, "error");
+      const { data } = error.response;
+      return { data: undefined, error: data.non_field_errors[0] };
     }
   };
 

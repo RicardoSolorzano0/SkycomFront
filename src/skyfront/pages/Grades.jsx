@@ -83,19 +83,28 @@ export const Grades = () => {
           severity: "success",
         });
       } else {
-        await createNota({
+        const { error } = await createNota({
           alumno,
           materia,
           nota,
           tipo_evaluacion: tipoEvaluacion,
         });
-        get();
 
-        setSnackbar({
-          open: true,
-          message: "Nota agregada con éxito",
-          severity: "success",
-        });
+        if (error) {
+          setSnackbar({
+            open: true,
+            message: error,
+            severity: "error",
+          });
+        } else {
+          get();
+
+          setSnackbar({
+            open: true,
+            message: "Nota agregada con éxito",
+            severity: "success",
+          });
+        }
       }
       handleClose();
     }
