@@ -16,6 +16,7 @@ export const useProfesorFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "Error al actualizar el profesor" };
     }
   };
 
@@ -25,6 +26,7 @@ export const useProfesorFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "Error al eliminar el profesor" };
     }
   };
 
@@ -34,6 +36,7 @@ export const useProfesorFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "Error al crear el profesor" };
     }
   };
 

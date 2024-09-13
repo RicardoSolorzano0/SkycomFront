@@ -57,21 +57,42 @@ export const Teachers = () => {
   const handleSubmit = async () => {
     if (validateForm()) {
       if (editando !== null) {
-        await updateProfesor({ id: editando, nombre, apellido, email });
-        get();
-        setSnackbar({
-          open: true,
-          message: "Profesor actualizado con éxito",
-          severity: "success",
+        const { error } = await updateProfesor({
+          id: editando,
+          nombre,
+          apellido,
+          email,
         });
+        if (error) {
+          setSnackbar({
+            open: true,
+            message: error,
+            severity: "error",
+          });
+        } else {
+          get();
+          setSnackbar({
+            open: true,
+            message: "Profesor actualizado con éxito",
+            severity: "success",
+          });
+        }
       } else {
-        await createProfesor({ nombre, apellido, email });
-        get();
-        setSnackbar({
-          open: true,
-          message: "Profesor agregado con éxito",
-          severity: "success",
-        });
+        const { error } = await createProfesor({ nombre, apellido, email });
+        if (error) {
+          snackbar({
+            open: true,
+            message: error,
+            severity: "error",
+          });
+        } else {
+          get();
+          setSnackbar({
+            open: true,
+            message: "Profesor agregado con éxito",
+            severity: "success",
+          });
+        }
       }
       handleClose();
     }
@@ -89,13 +110,21 @@ export const Teachers = () => {
   };
 
   const handleDelete = async (id) => {
-    await deleteProfesor(id);
-    get();
-    setSnackbar({
-      open: true,
-      message: "Profesor eliminado con éxito",
-      severity: "success",
-    });
+    const { error } = await deleteProfesor(id);
+    if (error) {
+      setSnackbar({
+        open: true,
+        message: error,
+        severity: "error",
+      });
+    } else {
+      get();
+      setSnackbar({
+        open: true,
+        message: "Profesor eliminado con éxito",
+        severity: "success",
+      });
+    }
   };
 
   const handleCloseSnackbar = (event, reason) => {
