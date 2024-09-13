@@ -60,7 +60,7 @@ export const Grades = () => {
       newErrors.materia = "La materia es requerida";
     if (!nota.trim()) newErrors.nota = "La nota es requerida";
     if (!tipoEvaluacion.trim())
-      newErrors.evaluacion = "La evaluacion es requerida";
+      newErrors.tipoEvaluacion = "La evaluacion es requerida";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -177,6 +177,8 @@ export const Grades = () => {
                 value: prof.id,
                 label: prof.nombre,
               }))}
+              error={!!errors.alumno}
+              helperText={errors.alumno}
             />
             <BasicSelect
               label="Materia"
@@ -188,6 +190,8 @@ export const Grades = () => {
                 value: prof.id,
                 label: prof.nombre,
               }))}
+              error={!!errors.materia}
+              helperText={errors.materia}
             />
             <TextField
               autoFocus

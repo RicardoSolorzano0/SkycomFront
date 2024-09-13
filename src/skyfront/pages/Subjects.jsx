@@ -47,6 +47,7 @@ export const Subjects = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!nombre.trim()) newErrors.nombre = "El nombre es requerido";
+    if (!profesor) newErrors.profesor = "El profesor es requerido";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -155,18 +156,9 @@ export const Subjects = () => {
                 value: prof.id,
                 label: prof.nombre,
               }))}
-            />
-
-            {/* <TextField
-              margin="dense"
-              label="Profesor"
-              type="text"
-              fullWidth
-              value={profesor}
-              onChange={(e) => setProfesor(e.target.value)}
               error={!!errors.profesor}
               helperText={errors.profesor}
-            /> */}
+            />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancelar</Button>
