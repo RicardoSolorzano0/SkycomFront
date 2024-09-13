@@ -76,13 +76,21 @@ export const Students = () => {
   };
 
   const handleDelete = async (id) => {
-    await deleteAlumno(id);
-    get();
-    setSnackbar({
-      open: true,
-      message: "Estudiante eliminado con éxito",
-      severity: "success",
-    });
+    const { error } = await deleteAlumno(id);
+    if (error) {
+      snackbar({
+        open: true,
+        message: error,
+        severity: "error",
+      });
+    } else {
+      get();
+      setSnackbar({
+        open: true,
+        message: "Estudiante eliminado con éxito",
+        severity: "success",
+      });
+    }
   };
 
   const handleCloseSnackbar = (event, reason) => {
@@ -95,32 +103,48 @@ export const Students = () => {
   const handleSubmit = async () => {
     if (validateForm()) {
       if (editando !== null) {
-        await updateAlumno({
+        const { error } = await updateAlumno({
           id: editando,
           nombre,
           apellido,
           email,
           fecha_nacimiento: fechaN,
         });
-        get();
-        setSnackbar({
-          open: true,
-          message: "Estudiante actualizado con éxito",
-          severity: "success",
-        });
+        if (error) {
+          snackbar({
+            open: true,
+            message: error,
+            severity: "error",
+          });
+        } else {
+          get();
+          setSnackbar({
+            open: true,
+            message: "Estudiante actualizado con éxito",
+            severity: "success",
+          });
+        }
       } else {
-        await createAlumno({
+        const { error } = await createAlumno({
           nombre,
           apellido,
           email,
           fecha_nacimiento: fechaN,
         });
-        get();
-        setSnackbar({
-          open: true,
-          message: "Estudiante agregado con éxito",
-          severity: "success",
-        });
+        if (error) {
+          snackbar({
+            open: true,
+            message: error,
+            severity: "error",
+          });
+        } else {
+          get();
+          setSnackbar({
+            open: true,
+            message: "Estudiante agregado con éxito",
+            severity: "success",
+          });
+        }
       }
       handleClose();
     }

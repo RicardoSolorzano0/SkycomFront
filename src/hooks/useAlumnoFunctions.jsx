@@ -16,6 +16,7 @@ export const useAlumnoFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "No se logro actualizar" };
     }
   };
 
@@ -25,6 +26,7 @@ export const useAlumnoFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "No se logro eliminar" };
     }
   };
 
@@ -34,6 +36,7 @@ export const useAlumnoFunctions = () => {
       return data;
     } catch (error) {
       console.log(error, "error");
+      return { data: undefined, error: "No se logro crear" };
     }
   };
 
